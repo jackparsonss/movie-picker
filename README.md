@@ -1,7 +1,7 @@
 # movie-picker
 ## Usage
 1. `go install .`
-2. `movie`
+2. `movie <command>`
 
 ## Commands
 - `add <movie name>`: adds a new movie
@@ -15,3 +15,4 @@
 ## Dependencies
 - [cobra](https://github.com/spf13/cobra)
 - [promptui](https://github.com/manifoldco/promptui)
+- [boltdb](https://github.com/boltdb/bolt)
