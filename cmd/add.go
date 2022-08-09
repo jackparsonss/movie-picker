@@ -18,7 +18,7 @@ var AddCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalln(err)
 		}
-		fmt.Printf("Successfully added \"%s\" to your movie list\n!", task)
+		fmt.Printf("Successfully added \"%s\" to your movie list!\n", task)
 	},
 }
 
