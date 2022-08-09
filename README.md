@@ -11,3 +11,7 @@
 - `delete <id>`: delete movie based on id
 - `pick`: picks a movie, prompts truth(use fun picker), adds to watched, deletes from list, else picks new movie
 - `fun`: interactive cli
+
+## Dependencies
+- [cobra](https://github.com/spf13/cobra)
+- [promptui](https://github.com/manifoldco/promptui)
