@@ -17,3 +17,4 @@
 - [cobra](https://github.com/spf13/cobra)
 - [promptui](https://github.com/manifoldco/promptui)
 - [boltdb](https://github.com/boltdb/bolt)
+- [color](https://github.com/fatih/color)
