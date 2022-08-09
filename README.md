@@ -4,13 +4,14 @@
 2. `movie <command>`
 
 ## Commands
-- `add <movie name>`: adds a new movie
-- `add-watched <movie name>`: adds a movie to  the watched list
-- `list`: lists all movies
-- `watched:` lists all watched movies
-- `delete <id>`: delete movie based on id
-- `pick`: picks a movie, prompts truth(use fun picker), adds to watched, deletes from list, else picks new movie
-- `fun`: interactive cli
+- `movie`: help
+- `movie add <movie name>`: adds a new movie
+- `movie add-watched <movie name>`: adds a movie to  the watched list
+- `movie list`: lists all movies
+- `movie watched:` lists all watched movies
+- `movie delete <id>`: delete movie based on id
+- `movie pick`: picks a movie, prompts truth(use fun picker), adds to watched, deletes from list, else picks new movie
+- `movie fun`: interactive cli
 
 ## Dependencies
 - [cobra](https://github.com/spf13/cobra)
