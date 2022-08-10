@@ -8,5 +8,5 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.PersistentFlags().Bool("watched", false, "A whether to use movie list or watched list")
+	RootCmd.PersistentFlags().BoolP("watched", "w", false, "A whether to use movie list or watched list")
 }
