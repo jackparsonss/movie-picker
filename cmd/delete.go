@@ -12,6 +12,8 @@ var DeleteCmd = &cobra.Command{
 	Use:   "delete",
 	Short: "Deletes a movie",
 	Run: func(cmd *cobra.Command, args []string) {
+		bucket := getWatchedFlag(cmd)
+
 		var ids []int
 		for _, v := range args {
 			id, err := strconv.Atoi(v)
@@ -23,7 +25,7 @@ var DeleteCmd = &cobra.Command{
 			ids = append(ids, id)
 		}
 
-		movies, err := db.AllMovies()
+		movies, err := db.AllMovies(bucket)
 
 		if err != nil {
 			log.Fatalln(err)
@@ -36,7 +38,7 @@ var DeleteCmd = &cobra.Command{
 			}
 			movie := movies[id-1]
 
-			err := db.DeleteMovie(movie.Key)
+			err := db.DeleteMovie(movie.Key, bucket)
 			if err != nil {
 				log.Fatalln(err)
 			}

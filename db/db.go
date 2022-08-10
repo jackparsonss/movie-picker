@@ -7,7 +7,8 @@ import (
 	"time"
 )
 
-var moviesBucket = []byte("movies")
+var MoviesBucket = []byte("movies")
+var WatchedBucket = []byte("watched")
 var db *bolt.DB
 
 type Movie struct {
@@ -23,8 +24,9 @@ func Connect(path string) error {
 		return err
 	}
 
-	return db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists(moviesBucket)
+	// create movies bucket
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists(MoviesBucket)
 
 		if err != nil {
 			return fmt.Errorf("create bucket: %s", err)
@@ -32,12 +34,33 @@ func Connect(path string) error {
 
 		return err
 	})
+
+	if err != nil {
+		return err
+	}
+
+	// create watched bucket
+	err = db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists(WatchedBucket)
+
+		if err != nil {
+			return fmt.Errorf("create bucket: %s", err)
+		}
+
+		return err
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func CreateMovie(task string) (int, error) {
+func CreateMovie(task string, bucket []byte) (int, error) {
 	var id int
 	err := db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket(moviesBucket)
+		b := tx.Bucket(bucket)
 		id64, _ := b.NextSequence()
 		id = int(id64)
 
@@ -52,18 +75,18 @@ func CreateMovie(task string) (int, error) {
 	return id, nil
 }
 
-func AllMovies() ([]Movie, error) {
-	var tasks []Movie
+func AllMovies(bucket []byte) ([]Movie, error) {
+	var movies []Movie
 	err := db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket(moviesBucket)
+		b := tx.Bucket(bucket)
 		c := b.Cursor()
 
 		for k, v := c.First(); k != nil; k, v = c.Next() {
-			task := Movie{
+			movie := Movie{
 				Key:   btoi(k),
 				Value: string(v),
 			}
-			tasks = append(tasks, task)
+			movies = append(movies, movie)
 		}
 
 		return nil
@@ -73,12 +96,12 @@ func AllMovies() ([]Movie, error) {
 		return nil, err
 	}
 
-	return tasks, nil
+	return movies, nil
 }
 
-func DeleteMovie(key int) error {
+func DeleteMovie(key int, bucket []byte) error {
 	return db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket(moviesBucket)
+		b := tx.Bucket(bucket)
 		return b.Delete(itob(key))
 	})
 }

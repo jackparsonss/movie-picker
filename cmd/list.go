@@ -11,7 +11,8 @@ var ListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "lists all movies",
 	Run: func(cmd *cobra.Command, args []string) {
-		movies, err := db.AllMovies()
+		bucket := getWatchedFlag(cmd)
+		movies, err := db.AllMovies(bucket)
 
 		if err != nil {
 			log.Fatalln(err)
@@ -22,11 +23,9 @@ var ListCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Println("You have the following tasks:")
-		var items []string
+		fmt.Println("You have the following movies:")
 		for i, movie := range movies {
 			fmt.Printf("%d. %s\n", i+1, movie.Value)
-			items = append(items, movie.Value)
 		}
 
 		if err != nil {

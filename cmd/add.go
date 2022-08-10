@@ -12,13 +12,15 @@ var AddCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Adds a movie",
 	Run: func(cmd *cobra.Command, args []string) {
-		task := strings.Join(args, " ")
-		_, err := db.CreateMovie(task)
+		bucket := getWatchedFlag(cmd)
+
+		movie := strings.Join(args, " ")
+		_, err := db.CreateMovie(movie, bucket)
 
 		if err != nil {
 			log.Fatalln(err)
 		}
-		fmt.Printf("Successfully added \"%s\" to your movie list!\n", task)
+		fmt.Printf("Successfully added \"%s\" to your movie list!\n", movie)
 	},
 }
 

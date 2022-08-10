@@ -6,11 +6,13 @@
 ## Commands
 - `movie`: help
 - `movie add <movie name>`: adds a new movie
-- `movie add-watched <movie name>`: adds a movie to  the watched list
+- `movie add <movie name> --watched`: adds a movie to  the watched list
+- `movie watch`: moves movie from movie list to watched list
 - `movie list`: lists all movies
-- `movie watched:` lists all watched movies
+- `movie list --watched:` lists all watched movies
 - `movie delete <id>`: delete movie based on id
-- `movie pick`: picks a movie, prompts truth(use fun picker), adds to watched, deletes from list, else picks new movie
+- `movie delete <id> --watched`: delete movie from watched list based on id
+- `movie pick`: picks a random movie
 - `movie fun`: interactive cli
 
 ## Dependencies

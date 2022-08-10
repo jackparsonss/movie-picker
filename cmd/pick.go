@@ -12,9 +12,9 @@ import (
 
 var PickCmd = &cobra.Command{
 	Use:   "pick",
-	Short: "Randomly pick a movie",
+	Short: "Randomly picks a movie",
 	Run: func(cmd *cobra.Command, args []string) {
-		movies, err := db.AllMovies()
+		movies, err := db.AllMovies(db.MoviesBucket)
 
 		if err != nil {
 			log.Fatalln(err)
@@ -27,7 +27,7 @@ var PickCmd = &cobra.Command{
 
 		for {
 			randomIndex := rand.Intn(len(movies))
-			d := color.New(color.FgCyan, color.Bold, color.Underline)
+			d := color.New(color.FgBlue, color.Bold, color.Underline)
 			fmt.Printf("Would you like to watch ")
 			d.Printf("\"%s\"?", movies[randomIndex].Value)
 			fmt.Printf("(yes/no): ")
@@ -35,8 +35,21 @@ var PickCmd = &cobra.Command{
 			var ans string
 			fmt.Scanln(&ans)
 			if strings.ToLower(ans) == "yes" || strings.ToLower(ans) == "y" {
-				// TODO: delete from current bucket, add to watched bucket
-				break
+				title := movies[randomIndex].Value
+
+				// delete from current bucket
+				err := db.DeleteMovie(movies[randomIndex].Key, db.MoviesBucket)
+				if err != nil {
+					log.Fatalln(err)
+				}
+
+				// add to watched list bucket
+				_, err = db.CreateMovie(title, db.WatchedBucket)
+
+				if err != nil {
+					log.Fatalln(err)
+				}
+				fmt.Println("Moved to watched list...")
 			}
 		}
 	},
