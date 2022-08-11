@@ -1,18 +1,20 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"log"
 	"movie/db"
+	"os"
 )
 
 var FunCmd = &cobra.Command{
 	Use:   "fun",
 	Short: "interactive cli",
 	Run: func(cmd *cobra.Command, args []string) {
-		menuOptions := []string{"• Movie List", "• Watched Movie List", "• Add a movie", "• Add a watched movie", "• EXIT"}
+		menuOptions := []string{"• Movie List", "• Watched Movie List", "• Add a movie", "• Add a watched movie", "✕ Exit"}
 		prompt := promptui.Select{
 			Label: "Select Your Option",
 			Items: menuOptions,
@@ -55,16 +57,16 @@ func handleList() {
 			log.Fatalln(err)
 		}
 
-		movieTitles := []string{"• GO BACK"}
+		movieTitles := []string{"✕ Cancel"}
 		for _, movie := range movies {
 			movieTitles = append(movieTitles, "• "+movie.Value)
 		}
 		prompt := promptui.Select{
-			Label: "Your movies",
+			Label: "Your movies:",
 			Items: movieTitles,
 		}
 
-		i, result, err := prompt.Run()
+		i, _, err := prompt.Run()
 
 		if i == 0 {
 			break
@@ -75,10 +77,10 @@ func handleList() {
 			return
 		}
 
-		options := []string{"• Watch Movie", "• Delete Movie", "• Go Back"}
+		options := []string{"• Watch Movie", "• Delete Movie", "✕ Cancel"}
 
 		prompt = promptui.Select{
-			Label: fmt.Sprintf("What would you like to do to %s", result),
+			Label: fmt.Sprintf("What would you like to do to %s", movies[i-1].Value),
 			Items: options,
 		}
 
@@ -117,16 +119,16 @@ func handleWatchedList() {
 			log.Fatalln(err)
 		}
 
-		movieTitles := []string{"• GO BACK"}
+		movieTitles := []string{"✕ Cancel"}
 		for _, movie := range movies {
 			movieTitles = append(movieTitles, "• "+movie.Value)
 		}
 		prompt := promptui.Select{
-			Label: "Your movies",
+			Label: "Your watched movies:",
 			Items: movieTitles,
 		}
 
-		i, result, err := prompt.Run()
+		i, _, err := prompt.Run()
 
 		if i == 0 {
 			break
@@ -137,10 +139,10 @@ func handleWatchedList() {
 			return
 		}
 
-		options := []string{"• Unwatch Movie", "• Delete Movie", "• Go Back"}
+		options := []string{"• Unwatch Movie", "• Delete Movie", "✕ Cancel"}
 
 		prompt = promptui.Select{
-			Label: fmt.Sprintf("What would you like to do to %s", result),
+			Label: fmt.Sprintf("What would you like to do to %s", movies[i-1].Value),
 			Items: options,
 		}
 
@@ -172,9 +174,23 @@ func handleWatchedList() {
 }
 
 func handleAdd() {
-	fmt.Println("Listing movies...")
+	handleAddMovie(db.MoviesBucket)
 }
 
 func handleAddWatched() {
-	fmt.Println("Listing movies...")
+	handleAddMovie(db.WatchedBucket)
+}
+
+func handleAddMovie(bucket []byte) {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf("Enter the movie title: ")
+	movieTitle, _ := reader.ReadString('\n')
+	movieTitle = movieTitle[:len(movieTitle)-1]
+
+	_, err := db.CreateMovie(movieTitle, bucket)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Printf("Succesfully added \"%s\"\n", movieTitle)
 }
