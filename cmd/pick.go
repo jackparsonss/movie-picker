@@ -3,10 +3,10 @@ package cmd
 import (
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/jackparsonss/movie/db"
 	"github.com/spf13/cobra"
 	"log"
 	"math/rand"
-	"movie/db"
 	"strings"
 )
 

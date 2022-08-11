@@ -2,9 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/jackparsonss/movie/db"
 	"github.com/spf13/cobra"
 	"log"
-	"movie/db"
 	"strings"
 )
 

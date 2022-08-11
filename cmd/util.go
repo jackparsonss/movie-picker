@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"github.com/jackparsonss/movie/db"
 	"github.com/spf13/cobra"
-	"movie/db"
 )
 
 func getWatchedFlag(cmd *cobra.Command) []byte {

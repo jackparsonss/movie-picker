@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/jackparsonss/movie/cmd"
+	"github.com/jackparsonss/movie/db"
 	"log"
 	"math/rand"
-	"movie/cmd"
-	"movie/db"
 	"time"
 )
 

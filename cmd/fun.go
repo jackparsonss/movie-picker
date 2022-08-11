@@ -3,10 +3,10 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"github.com/jackparsonss/movie/db"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"log"
-	"movie/db"
 	"os"
 )
 
