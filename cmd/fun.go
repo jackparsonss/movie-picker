@@ -3,11 +3,12 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/jackparsonss/movie/db"
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
-	"log"
-	"os"
 )
 
 var FunCmd = &cobra.Command{
@@ -64,6 +65,7 @@ func handleList() {
 		prompt := promptui.Select{
 			Label: "Your movies:",
 			Items: movieTitles,
+			Size:  30,
 		}
 
 		i, _, err := prompt.Run()
@@ -126,6 +128,7 @@ func handleWatchedList() {
 		prompt := promptui.Select{
 			Label: "Your watched movies:",
 			Items: movieTitles,
+			Size:  30,
 		}
 
 		i, _, err := prompt.Run()
