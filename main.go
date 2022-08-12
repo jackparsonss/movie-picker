@@ -10,7 +10,7 @@ import (
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	err := db.Connect("/Users/jackparsons/Storage/bolt/tasks.db")
+	err := db.Connect("/Users/jackparsons/Storage/bolt/movies.db")
 	must(err)
 
 	err = cmd.RootCmd.Execute()
