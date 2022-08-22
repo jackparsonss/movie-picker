@@ -3,8 +3,11 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"github.com/fatih/color"
 	"log"
+	"math/rand"
 	"os"
+	"strings"
 
 	"github.com/jackparsonss/movie/db"
 	"github.com/manifoldco/promptui"
@@ -15,7 +18,7 @@ var FunCmd = &cobra.Command{
 	Use:   "fun",
 	Short: "interactive cli",
 	Run: func(cmd *cobra.Command, args []string) {
-		menuOptions := []string{"• Movie List", "• Watched Movie List", "• Add a movie", "• Add a watched movie", "✕ Exit"}
+		menuOptions := []string{"• Pick Movie", "• Movie List", "• Watched Movie List", "• Add a movie", "• Add a watched movie", "✕ Exit"}
 		prompt := promptui.Select{
 			Label: "Select Your Option",
 			Items: menuOptions,
@@ -31,12 +34,14 @@ var FunCmd = &cobra.Command{
 
 			switch result {
 			case menuOptions[0]:
-				handleList()
+				pickMovie()
 			case menuOptions[1]:
-				handleWatchedList()
+				handleList()
 			case menuOptions[2]:
-				handleAdd()
+				handleWatchedList()
 			case menuOptions[3]:
+				handleAdd()
+			case menuOptions[4]:
 				handleAddWatched()
 			default:
 				return
@@ -48,6 +53,55 @@ var FunCmd = &cobra.Command{
 
 func init() {
 	RootCmd.AddCommand(FunCmd)
+}
+
+func pickMovie() {
+	movies, err := db.AllMovies(db.MoviesBucket)
+
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if len(movies) == 0 {
+		fmt.Println("You have no movies...")
+		return
+	}
+
+	for {
+		randomIndex := rand.Intn(len(movies))
+		d := color.New(color.FgBlue, color.Bold, color.Underline).SprintFunc()
+		menuOptions := []string{"Yes", "No"}
+		prompt := promptui.Select{
+			Label: "Would you like to watch " + d(movies[randomIndex].Value),
+			Items: menuOptions,
+		}
+
+		_, result, err := prompt.Run()
+
+		if err != nil {
+			fmt.Printf("Prompt failed %v\n", err)
+			return
+		}
+
+		if strings.ToLower(result) == "yes" || strings.ToLower(result) == "y" {
+			title := movies[randomIndex].Value
+
+			// delete from current bucket
+			err := db.DeleteMovie(movies[randomIndex].Key, db.MoviesBucket)
+			if err != nil {
+				log.Fatalln(err)
+			}
+
+			// add to watched list bucket
+			_, err = db.CreateMovie(title, db.WatchedBucket)
+
+			if err != nil {
+				log.Fatalln(err)
+			}
+			fmt.Println("Moved to watched list...")
+			return
+		}
+	}
 }
 
 func handleList() {

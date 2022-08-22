@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/fatih/color"
 	"github.com/jackparsonss/movie/db"
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 	"log"
 	"math/rand"
@@ -27,14 +28,21 @@ var PickCmd = &cobra.Command{
 
 		for {
 			randomIndex := rand.Intn(len(movies))
-			d := color.New(color.FgBlue, color.Bold, color.Underline)
-			fmt.Printf("Would you like to watch ")
-			d.Printf("\"%s\"?", movies[randomIndex].Value)
-			fmt.Printf("(yes/no): ")
+			d := color.New(color.FgBlue, color.Bold, color.Underline).SprintFunc()
+			menuOptions := []string{"Yes", "No"}
+			prompt := promptui.Select{
+				Label: "Would you like to watch " + d(movies[randomIndex].Value),
+				Items: menuOptions,
+			}
 
-			var ans string
-			fmt.Scanln(&ans)
-			if strings.ToLower(ans) == "yes" || strings.ToLower(ans) == "y" {
+			_, result, err := prompt.Run()
+
+			if err != nil {
+				fmt.Printf("Prompt failed %v\n", err)
+				return
+			}
+
+			if strings.ToLower(result) == "yes" {
 				title := movies[randomIndex].Value
 
 				// delete from current bucket
@@ -50,6 +58,7 @@ var PickCmd = &cobra.Command{
 					log.Fatalln(err)
 				}
 				fmt.Println("Moved to watched list...")
+				return
 			}
 		}
 	},

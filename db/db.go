@@ -12,8 +12,8 @@ var WatchedBucket = []byte("watched")
 var db *bolt.DB
 
 type Movie struct {
-	Key   int
-	Value string
+	Key   int    `json:"key"`
+	Value string `json:"value"`
 }
 
 func Connect(path string) error {

@@ -14,9 +14,11 @@
 - `movie delete <id> --watched`: delete movie from watched list based on id
 - `movie pick`: picks a random movie
 - `movie fun`: interactive cli
+- `movie web`: web based gui
 
 ## Dependencies
 - [cobra](https://github.com/spf13/cobra)
 - [promptui](https://github.com/manifoldco/promptui)
 - [boltdb](https://github.com/boltdb/bolt)
 - [color](https://github.com/fatih/color)
+- [gin](https://github.com/gin-gonic/gin)
