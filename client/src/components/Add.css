@@ -1,0 +1,28 @@
+.add {
+  display: flex;
+  align-items: center;
+  border-radius: 15px;
+  padding: 20px 30px;
+}
+
+.add > input {
+  font-family: "DynaPuff", cursive;
+  border: none;
+  padding: 6.5px 10px;
+  border-radius: 5px 0 0 5px;
+}
+
+.add > input::placeholder {
+  font-family: "DynaPuff", cursive;
+}
+
+.add > button {
+  background-color: #c3b1e1;
+  border: none;
+  font-weight: 600;
+  color: white;
+  font-family: "DynaPuff", cursive;
+  padding: 6.6px 10px;
+  padding-right: 15px;
+  border-radius: 0 5px 5px 0;
+}

@@ -16,10 +16,12 @@ var WebCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		gin.SetMode(gin.ReleaseMode)
 		r := gin.New()
-		r.Use(cors.New(cors.Config{
-			AllowOrigins: []string{"http://localhost:3000"},
-			AllowMethods: []string{"PUT", "GET"},
-		}))
+
+		config := cors.DefaultConfig()
+		config.AllowOrigins = []string{"http://localhost:3000"}
+		r.Use(cors.New(config))
+
+		// MACOS ONLY
 		exec.Command("open", "http://localhost:8080").Start()
 
 		// Serve frontend static files
@@ -27,6 +29,8 @@ var WebCmd = &cobra.Command{
 
 		r.GET("/api/list", api.List)
 		r.PUT("/api/watch/:id", api.Watch)
+		r.POST("/api/add", api.Add)
+		r.DELETE("/api/delete/:id", api.Delete)
 
 		log.Fatal(r.Run())
 	},
