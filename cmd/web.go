@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/jackparsonss/movie/api"
 	"github.com/spf13/cobra"
 	"log"
+	"os/exec"
 )
 
 var WebCmd = &cobra.Command{
@@ -20,7 +20,7 @@ var WebCmd = &cobra.Command{
 			AllowOrigins: []string{"http://localhost:3000"},
 			AllowMethods: []string{"PUT", "GET"},
 		}))
-		fmt.Println("http://localhost:8080")
+		exec.Command("open", "http://localhost:8080").Start()
 
 		// Serve frontend static files
 		r.Use(static.Serve("/", static.LocalFile("./client/build", true)))
