@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/boltdb/bolt v1.3.1
 	github.com/fatih/color v1.13.0
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.8.1
 	github.com/manifoldco/promptui v0.9.0

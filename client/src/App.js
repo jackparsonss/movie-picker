@@ -1,11 +1,16 @@
 import './App.css';
-import List from "./components/List";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Home from "./screens/Home";
+import Picked from "./screens/Picked";
 
 function App() {
   return (
-    <div>
-      <List />
-    </div>
+      <BrowserRouter>
+          <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/pick" element={<Picked />} />
+          </Routes>
+      </BrowserRouter>
   );
 }
 

@@ -22,6 +22,7 @@ var FunCmd = &cobra.Command{
 		prompt := promptui.Select{
 			Label: "Select Your Option",
 			Items: menuOptions,
+			Size:  6,
 		}
 
 		for {
