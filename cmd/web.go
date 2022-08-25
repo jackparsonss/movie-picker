@@ -29,6 +29,7 @@ var WebCmd = &cobra.Command{
 
 		r.GET("/api/list", api.List)
 		r.PUT("/api/watch/:id", api.Watch)
+		r.PUT("/api/move/:id", api.Move)
 		r.POST("/api/add", api.Add)
 		r.DELETE("/api/delete/:id", api.Delete)
 

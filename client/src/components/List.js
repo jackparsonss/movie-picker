@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addToMovieList,
   deleteMovie,
+  moveMovie,
   removeFromMovieList,
   selectMovies,
 } from "../slices/list";
@@ -18,6 +19,7 @@ const List = ({ type }) => {
   };
 
   const handleMove = (key, value, type) => {
+    dispatch(moveMovie({ title: value, key, bucket: type }));
     dispatch(removeFromMovieList({ type, key }));
     dispatch(
       addToMovieList({

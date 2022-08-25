@@ -42,6 +42,24 @@ const addMovie = createAsyncThunk("add/movie", async (title) => {
   }
 });
 
+const moveMovie = createAsyncThunk(
+  "move/movie",
+  async ({ title, key, bucket }) => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:8080/api/move/${key}?bucket=${bucket}`,
+        {
+          title,
+        }
+      );
+
+      return data;
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+);
+
 const deleteMovie = createAsyncThunk(
   "delete/moviie",
   async ({ key, value }, thunkAPI) => {
@@ -109,6 +127,13 @@ export const listSlice = createSlice({
 
 export const { removeFromMovieList, addToMovieList } = listSlice.actions;
 
-export { selectMovies, getMovies, watchMovie, addMovie, deleteMovie };
+export {
+  selectMovies,
+  getMovies,
+  watchMovie,
+  addMovie,
+  deleteMovie,
+  moveMovie,
+};
 
 export default listSlice.reducer;
