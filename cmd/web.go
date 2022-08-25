@@ -1,13 +1,14 @@
 package cmd
 
 import (
+	"log"
+	"os/exec"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/jackparsonss/movie/api"
 	"github.com/spf13/cobra"
-	"log"
-	"os/exec"
 )
 
 var WebCmd = &cobra.Command{
@@ -25,7 +26,7 @@ var WebCmd = &cobra.Command{
 		exec.Command("open", "http://localhost:8080").Start()
 
 		// Serve frontend static files
-		r.Use(static.Serve("/", static.LocalFile("./client/build", true)))
+		r.Use(static.Serve("/", static.LocalFile("/Users/jackparsons/Storage/Repositories/movie-picker/client/build", true)))
 
 		r.GET("/api/list", api.List)
 		r.PUT("/api/watch/:id", api.Watch)
